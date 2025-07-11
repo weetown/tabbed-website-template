@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="My Website">
+  <meta name="keywords" content="website, games, images, videos, blog">
+  <title>WEBSITE TITLE</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css"/>
+
+  <!--This is the logic for theme switching -->
+  <script>
+    function setTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    }
+
+    function buildThemeDropdown() {
+      const select = document.getElementById("theme-select");
+      if (!select) return;
+      select.innerHTML = "";
+
+      const groups = {
+        "Light Themes": [],
+        "Dark Themes": []
+      };
+
+      for (const sheet of document.styleSheets) {
+        try {
+          for (const rule of sheet.cssRules) {
+            if (rule.selectorText?.startsWith('[data-theme="')) {
+              const theme = rule.selectorText.match(/"(.+?)"/)?.[1];
+              if (!theme) continue;
+
+              if (theme.startsWith("🌙")) {
+                groups["Dark Themes"].push(theme);
+              } else {
+                groups["Light Themes"].push(theme);
+              }
+            }
+          }
+        } catch (e) {
+          continue;
+        }
+      }
+
+      for (const [label, themeList] of Object.entries(groups)) {
+        const group = document.createElement("optgroup");
+        group.label = label;
+
+        themeList.forEach(theme => {
+          const opt = document.createElement("option");
+          opt.value = theme;
+          opt.textContent = theme;
+          group.appendChild(opt);
+        });
+
+        select.appendChild(group);
+      }
+
+      const saved = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const fallback = prefersDark ? "dark mint" : "mint";
+
+      const current = saved || fallback;
+      document.documentElement.setAttribute("data-theme", current);
+      select.value = current;
+    }
+
+    window.addEventListener("DOMContentLoaded", buildThemeDropdown);
+  </script>
+
+  <!-- define your tab config here; label = button text, file = HTML file to load. HTML files should be placed in the /pages directory unless you've edited the js file to point somewhere else.-->
+  <script>
+    window.tabConfig = [
+      { label: "Home", file: null },
+      { label: "About Me", file: "about.html" },
+      { label: "Gallery", file: "gallery.html" },
+      { label: "Cool Stuff", file: "projects.html" }
+    ];
+  </script>
+
+  <script>
+    window.staticTabContent = {
+      "Home": `
+        <h1>Welcome!</h1>
+        <p>This is the static part of the homepage.</p>
+        <p>Put whatever you want here and it'll render without needing a file.</p>
+        <p>It'll load even if the other pages break somehow, and if it's the first tab in the list it'll be open automatically as the homepage. You can put stuff here that you don't want to change regularly, and load in other stuff dynamically from includes html and iframes and stuff. Go nuts! </p>
+      `,
+      "Secret": `
+        <p>You don't actually have to call this html ;) You can just write it and hide it if you want.... people will only find it if they look in the source......</p>
+        <p>You might be able to figure out a way to make this fun and interactive, or you might just wanna do drafts here! Idk! Either way it's public, but not visible until called.</p>
+      `
+    };
+  </script>
+
+  <script src="js/tabs.js" defer></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo" alt="website logo"></div>
+    <br>
+    <h1> Automatic Tab Template!</h1>
+    <p><small> A layout that uses JS to automatically pull in external html pages as tabs without having to edit the code in the homepage each time. Just put the file name and label into the tabConfig and it will inject the right containers automatically. </small></p>
+    <p>Also includes logic for theme switching! It scans the css to look for [data-theme="theme name"] to automatically add it to the drop down menu. Trying to build something dynamic, responsive, but also lightweight and user friendly! :3 </p>
+  </header>
+
+  <div class="layout">
+    <div class="left sidebar">
+      <label for="theme-select">Theme:</label>
+      <select id="theme-select" onchange="setTheme(this.value)"></select>
+    </div>
+
+    <main id="main">
+      <nav>
+        <div class="tab"></div>
+        <div class="buttons">
+          <button onclick="location.href='#'">Link 1</button>
+          <button onclick="location.href='#'">Link 2</button>
+          <button onclick="location.href='#'">Link 3</button>
+        </div>
+      </nav>
+    </main>
+
+    <div class="right sidebar">
+      ***right sidebar content here***
+    </div>
+  </div>
+</body>
+</html>

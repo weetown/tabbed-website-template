@@ -1,0 +1,171 @@
+/* === Theme Variables === */
+:root {
+  --logo: url("../themes/default/images/logo.png");
+  --bg: #ffffff;
+  --text: #000000;
+  --accent: #007bff;
+  --header-bg: #f0f0f0;
+  --tab-bg: #e0e0e0;
+  --tab-active-bg: var(--accent);
+  --tab-active-text: #ffffff;
+}
+
+[data-theme="🌙 dark bubblegum"] {
+  --logo: url("../themes/bubblegum/images/logo.png");
+    --bg: #181818;
+  --text: #f0f0f0;
+  --accent: #ff4081;
+  --header-bg: #222;
+  --tab-bg: #333;
+  --tab-active-bg: var(--accent);
+  --tab-active-text: #000;
+}
+
+[data-theme="⭐ bubblegum"] {
+  --logo: url("../themes/bubblegum/images/logo.png");
+  --bg: #fff0f6;
+  --text: #222;
+  --accent: #ff4081;
+  --header-bg: #ffe0ea;
+  --tab-bg: #ffc2dc;
+  --tab-active-bg: #ff4081;
+  --tab-active-text: #fff;
+}
+
+[data-theme="⭐ mint"] {
+  --logo: url("../themes/mint/images/logo.png");
+  --bg: #f4fff8;
+  --text: #033;
+  --accent: #00b894;
+  --header-bg: #d8fff0;
+  --tab-bg: #b2f4dc;
+  --tab-active-bg: #00b894;
+  --tab-active-text: #ffffff;
+}
+
+
+[data-theme="🌙 dark mint"] {
+  --logo: url("../themes/mint/images/logo.png");
+  --bg: #181818;
+  --text: #f0f0f0;
+  --accent: #00b894;
+  --header-bg: #222;
+  --tab-bg: #333;
+  --tab-active-bg: var(--accent);
+  --tab-active-text: #000;
+}
+
+ [data-theme="🌙 dark grape"] {
+  --logo: url("../themes/grape/images/logo.png");
+  --bg: #181818;
+  --text: #f0f0f0;
+  --accent: #cc99ff;
+  --header-bg: #222;
+  --tab-bg: #333;
+  --tab-active-bg: var(--accent);
+  --tab-active-text: #000;
+ }
+
+[data-theme="⭐ grape"] {
+  --logo: url("../themes/grape/images/logo.png");
+  --bg: #e6e6fa;
+  --text: #333;
+  --accent: #cc99ff;
+  --header-bg: #f5f5ff;
+  --tab-bg: #d9c2ff;
+  --tab-active-bg: #cc99ff;
+  --tab-active-text: #000;
+}
+
+
+[data-theme="🌙 cybersoda"] {
+  --logo: url("../themes/cybersoda/images/logo.png");
+  --bg: #000000;
+  --text: #39ff14;
+  --accent: #00f0ff;
+  --header-bg: #111;
+  --tab-bg: #222;
+  --tab-active-bg: #00f0ff;
+  --tab-active-text: #000000;
+}
+
+
+/* === Layout Styling === */
+
+.logo {
+  width: 100px;
+  height: 100px;
+  background-image: var(--logo);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.left.sidebar,
+.right.sidebar {
+  flex: 0 0 200px;
+  background: var(--header-bg);
+  padding: 1rem;
+  border: 1px solid var(--accent);
+}
+
+main {
+  flex: 1;
+  background: var(--bg);
+  padding: 1rem;
+  min-width: 0;
+}
+
+/* === Tabs and Buttons === */
+.tab, .buttons, button {
+  background: var(--tab-bg);
+  color: var(--text);
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.tab, .buttons, button.active {
+  background: var(--tab-active-bg);
+  color: var(--tab-active-text);
+}
+
+select#theme-select {
+  margin-left: 1rem;
+  padding: 0.25em 0.5em;
+  background: var(--tab-bg);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+/* === Responsive Layout === */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .left.sidebar,
+  .right.sidebar,
+  main {
+    flex: 1 1 auto;
+  }
+
+  .right.sidebar {
+    display: none;
+  }
+}
