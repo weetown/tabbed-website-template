@@ -46,7 +46,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const defaultTab = document.getElementById("defaultOpen");
   if (defaultTab) defaultTab.click();
+
+  setupMobileSidebars();
 });
+
+function setupMobileSidebars() {
+  const body = document.body;
+  const leftToggle = document.getElementById("left-sidebar-toggle");
+  const rightToggle = document.getElementById("right-sidebar-toggle");
+  const backdrop = document.getElementById("sidebar-backdrop");
+
+  if (!leftToggle || !rightToggle || !backdrop) return;
+
+  const setState = (state = "") => {
+    body.classList.remove("left-open", "right-open");
+    if (state) body.classList.add(state);
+
+    const leftOpen = state === "left-open";
+    const rightOpen = state === "right-open";
+
+    leftToggle.setAttribute("aria-expanded", String(leftOpen));
+    leftToggle.setAttribute("aria-label", leftOpen ? "Close left sidebar" : "Open left sidebar");
+    leftToggle.innerHTML = `<i class="fa-solid ${leftOpen ? "fa-chevron-left" : "fa-chevron-right"}" aria-hidden="true"></i>`;
+
+    rightToggle.setAttribute("aria-expanded", String(rightOpen));
+    rightToggle.setAttribute("aria-label", rightOpen ? "Close right sidebar" : "Open right sidebar");
+    rightToggle.innerHTML = `<i class="fa-solid ${rightOpen ? "fa-chevron-right" : "fa-chevron-left"}" aria-hidden="true"></i>`;
+
+    if (leftOpen || rightOpen) {
+      backdrop.hidden = false;
+    } else {
+      backdrop.hidden = true;
+    }
+  };
+
+  leftToggle.addEventListener("click", () => {
+    setState(body.classList.contains("left-open") ? "" : "left-open");
+  });
+
+  rightToggle.addEventListener("click", () => {
+    setState(body.classList.contains("right-open") ? "" : "right-open");
+  });
+
+  backdrop.addEventListener("click", () => setState(""));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setState("");
+  });
+}
 
 function openTab(evt, tabId, containerId, filePath) {
   document.querySelectorAll(".tabcontent").forEach(tab => {
