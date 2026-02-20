@@ -153,8 +153,17 @@ select#theme-select {
   font-size: 1em;
 }
 
+.mobile-sidebar-controls {
+  display: none;
+}
+
 /* === Responsive Layout === */
 @media (max-width: 768px) {
+  body {
+    padding-bottom: 4.5rem;
+    overflow-x: hidden;
+  }
+
   .layout {
     flex-direction: column;
   }
@@ -165,7 +174,92 @@ select#theme-select {
     flex: 1 1 auto;
   }
 
+  .left.sidebar,
   .right.sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: min(85vw, 22rem);
+    margin: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .left.sidebar {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .right.sidebar {
+    right: 0;
+    display: block;
+    transform: translateX(100%);
+  }
+
+  body.left-open .left.sidebar {
+    transform: translateX(0);
+  }
+
+  body.right-open .right.sidebar {
+    transform: translateX(0);
+  }
+
+  .mobile-sidebar-controls {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3.5rem;
+    background: color-mix(in srgb, var(--header-bg) 80%, transparent);
+    border-top: 1px solid var(--accent);
+    z-index: 1200;
+    backdrop-filter: blur(4px);
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    bottom: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    color: var(--tab-active-text);
+    background: var(--tab-active-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s ease, right 0.3s ease, transform 0.3s ease;
+  }
+
+  .sidebar-toggle-left {
+    left: 0.75rem;
+  }
+
+  .sidebar-toggle-right {
+    right: 0.75rem;
+  }
+
+  body.left-open .sidebar-toggle-left {
+    left: calc(min(85vw, 22rem) - 3.25rem);
+  }
+
+  body.right-open .sidebar-toggle-right {
+    right: calc(min(85vw, 22rem) - 3.25rem);
+  }
+
+  .sidebar-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .left.sidebar,
+  .right.sidebar,
+  .sidebar-toggle {
+    transition: none !important;
   }
 }

@@ -7,6 +7,7 @@
   <meta name="keywords" content="website, games, images, videos, blog">
   <title>WEBSITE TITLE</title>
   <link href="css/style.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWix+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8f+oD2Qd6N1f3zB6+Y7F5KkN4Vx0zYg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!--This is the logic for theme switching -->
   <script>
@@ -108,7 +109,7 @@
   </header>
 
   <div class="layout">
-    <div class="left sidebar">
+    <div id="left-sidebar" class="left sidebar">
       <label for="theme-select">Theme:</label>
       <select id="theme-select" onchange="setTheme(this.value)"></select>
     </div>
@@ -124,9 +125,18 @@
       </nav>
     </main>
 
-    <div class="right sidebar">
+    <div id="right-sidebar" class="right sidebar">
       ***right sidebar content here***
     </div>
+  </div>
+
+  <div class="mobile-sidebar-controls" aria-label="Sidebar controls">
+    <button id="mobile-left-toggle" class="sidebar-toggle sidebar-toggle-left" type="button" aria-controls="left-sidebar" aria-expanded="false" aria-label="Open left sidebar">
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+    <button id="mobile-right-toggle" class="sidebar-toggle sidebar-toggle-right" type="button" aria-controls="right-sidebar" aria-expanded="false" aria-label="Open right sidebar">
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
   </div>
 </body>
 </html>

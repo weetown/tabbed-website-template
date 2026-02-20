@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabId = tabName.replace(/\s+/g, "-");
     const containerId = `${tabId.toLowerCase()}-content`;
 
-    // create tab button
     const btn = document.createElement("button");
     btn.className = "tablinks";
     btn.dataset.tab = tabId;
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (index === 0) btn.id = "defaultOpen";
     nav.appendChild(btn);
 
-    // create article + content div
     if (!document.getElementById(tabId)) {
       const article = document.createElement("article");
       article.className = "tabcontent";
@@ -46,14 +44,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const defaultTab = document.getElementById("defaultOpen");
   if (defaultTab) defaultTab.click();
+
+  setupMobileSidebarControls();
 });
 
 function openTab(evt, tabId, containerId, filePath) {
-  document.querySelectorAll(".tabcontent").forEach(tab => {
+  document.querySelectorAll(".tabcontent").forEach((tab) => {
     tab.style.display = "none";
   });
 
-  document.querySelectorAll(".tablinks").forEach(link => {
+  document.querySelectorAll(".tablinks").forEach((link) => {
     link.classList.remove("active");
   });
 
@@ -67,13 +67,77 @@ function openTab(evt, tabId, containerId, filePath) {
 }
 
 function loadTabContent(containerId, filePath) {
-  fetch(`pages/${filePath}`) //if you wanna change the name of the folder your html is in, edit the "pages" part of this
-    .then(res => res.text())
-    .then(html => {
+  fetch(`pages/${filePath}`)
+    .then((res) => res.text())
+    .then((html) => {
       const container = document.getElementById(containerId);
       if (container) container.innerHTML = html;
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(`error loading ${filePath}:`, err);
     });
+}
+
+function setupMobileSidebarControls() {
+  const leftToggle = document.getElementById("mobile-left-toggle");
+  const rightToggle = document.getElementById("mobile-right-toggle");
+
+  if (!leftToggle || !rightToggle) return;
+
+  const leftIcon = leftToggle.querySelector("i");
+  const rightIcon = rightToggle.querySelector("i");
+
+  const closeAll = () => {
+    document.body.classList.remove("left-open", "right-open");
+  };
+
+  const setChevron = (iconEl, className) => {
+    if (!iconEl) return;
+    iconEl.classList.remove("fa-chevron-left", "fa-chevron-right");
+    iconEl.classList.add(className);
+  };
+
+  const syncSidebarUI = () => {
+    const leftOpen = document.body.classList.contains("left-open");
+    const rightOpen = document.body.classList.contains("right-open");
+
+    leftToggle.setAttribute("aria-expanded", String(leftOpen));
+    rightToggle.setAttribute("aria-expanded", String(rightOpen));
+
+    leftToggle.setAttribute("aria-label", leftOpen ? "Close left sidebar" : "Open left sidebar");
+    rightToggle.setAttribute("aria-label", rightOpen ? "Close right sidebar" : "Open right sidebar");
+
+    setChevron(leftIcon, leftOpen ? "fa-chevron-left" : "fa-chevron-right");
+    setChevron(rightIcon, rightOpen ? "fa-chevron-right" : "fa-chevron-left");
+  };
+
+  leftToggle.addEventListener("click", () => {
+    const leftOpen = document.body.classList.contains("left-open");
+    closeAll();
+    if (!leftOpen) document.body.classList.add("left-open");
+    syncSidebarUI();
+  });
+
+  rightToggle.addEventListener("click", () => {
+    const rightOpen = document.body.classList.contains("right-open");
+    closeAll();
+    if (!rightOpen) document.body.classList.add("right-open");
+    syncSidebarUI();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeAll();
+      syncSidebarUI();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      closeAll();
+      syncSidebarUI();
+    }
+  });
+
+  syncSidebarUI();
 }
