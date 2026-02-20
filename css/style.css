@@ -106,6 +106,7 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .layout {
@@ -153,19 +154,127 @@ select#theme-select {
   font-size: 1em;
 }
 
+.mobile-sidebar-controls,
+.sidebar-backdrop {
+  display: none;
+}
+
 /* === Responsive Layout === */
 @media (max-width: 768px) {
+  body {
+    padding-bottom: 4.5rem;
+  }
+
   .layout {
     flex-direction: column;
+    padding: 0;
+    gap: 0;
+  }
+
+  main {
+    flex: 1 1 auto;
+    padding: 1rem;
   }
 
   .left.sidebar,
-  .right.sidebar,
-  main {
-    flex: 1 1 auto;
+  .right.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: min(100vw, 320px);
+    max-width: 100%;
+    z-index: 25;
+    margin: 0;
+    overflow-y: auto;
+    transition: transform 0.28s ease;
+  }
+
+  .left.sidebar {
+    left: 0;
+    transform: translateX(-100%);
   }
 
   .right.sidebar {
-    display: none;
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  body.left-open .left.sidebar {
+    transform: translateX(0);
+  }
+
+  body.right-open .right.sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 35%);
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.28s ease;
+  }
+
+  body.left-open .sidebar-backdrop,
+  body.right-open .sidebar-backdrop {
+    display: block;
+    opacity: 1;
+  }
+
+  .mobile-sidebar-controls {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4rem;
+    z-index: 30;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--header-bg) 88%, transparent);
+    border-top: 1px solid var(--accent);
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background: var(--tab-active-bg);
+    color: var(--tab-active-text);
+    transition: left 0.28s ease, right 0.28s ease, background-color 0.2s ease;
+  }
+
+  .left-toggle {
+    left: 0.75rem;
+  }
+
+  .right-toggle {
+    right: 0.75rem;
+  }
+
+  body.left-open .left-toggle {
+    left: calc(min(100vw, 320px) - 3.4rem);
+  }
+
+  body.right-open .right-toggle {
+    right: calc(min(100vw, 320px) - 3.4rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .left.sidebar,
+    .right.sidebar,
+    .sidebar-backdrop,
+    .sidebar-toggle {
+      transition: none;
+    }
   }
 }
