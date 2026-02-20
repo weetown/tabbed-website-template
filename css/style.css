@@ -372,13 +372,6 @@ select#theme-select {
     right: calc(100vw - 3.4rem);
   }
 
-
-  body.left-open .right-toggle,
-  body.right-open .left-toggle {
-    opacity: 0;
-    pointer-events: none;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .left.sidebar,
     .right.sidebar,
