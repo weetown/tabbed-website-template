@@ -83,17 +83,13 @@ function setupMobileSidebars() {
 
     leftToggle.setAttribute("aria-expanded", String(leftOpen));
     leftToggle.setAttribute("aria-label", leftOpen ? "Close left sidebar" : "Open left sidebar");
-    leftToggle.innerHTML = `<i class="fa-solid ${leftOpen ? "fa-chevron-left" : "fa-chevron-right"}" aria-hidden="true"></i>`;
+    leftToggle.innerHTML = `<span class="chevron" aria-hidden="true">${leftOpen ? "‹" : "›"}</span>`;
 
     rightToggle.setAttribute("aria-expanded", String(rightOpen));
     rightToggle.setAttribute("aria-label", rightOpen ? "Close right sidebar" : "Open right sidebar");
-    rightToggle.innerHTML = `<i class="fa-solid ${rightOpen ? "fa-chevron-right" : "fa-chevron-left"}" aria-hidden="true"></i>`;
+    rightToggle.innerHTML = `<span class="chevron" aria-hidden="true">${rightOpen ? "›" : "‹"}</span>`;
 
-    if (leftOpen || rightOpen) {
-      backdrop.hidden = false;
-    } else {
-      backdrop.hidden = true;
-    }
+    backdrop.hidden = !(leftOpen || rightOpen);
   };
 
   leftToggle.addEventListener("click", () => {
@@ -109,6 +105,8 @@ function setupMobileSidebars() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setState("");
   });
+
+  setState("");
 }
 
 function openTab(evt, tabId, containerId, filePath) {
