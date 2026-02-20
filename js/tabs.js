@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const staticContent = window.staticTabContent || {};
   const main = document.getElementById("main");
   const nav = document.querySelector("nav .tab");
+  const mobileNav = document.querySelector("nav .mobile-top-tabs");
 
   config.forEach((tab, index) => {
     const tabName = tab.label;
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabId = tabName.replace(/\s+/g, "-");
     const containerId = `${tabId.toLowerCase()}-content`;
 
-    // create tab button
+    // create desktop tab button
     const btn = document.createElement("button");
     btn.className = "tablinks";
     btn.dataset.tab = tabId;
@@ -19,6 +20,21 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.textContent = tabName;
     if (index === 0) btn.id = "defaultOpen";
     nav.appendChild(btn);
+
+    // create mobile tab button
+    if (mobileNav) {
+      const mobileBtn = document.createElement("button");
+      mobileBtn.className = "tablinks";
+      mobileBtn.dataset.tab = tabId;
+      mobileBtn.dataset.file = filePath;
+      mobileBtn.dataset.container = containerId;
+      mobileBtn.textContent = tabName;
+      mobileNav.appendChild(mobileBtn);
+
+      mobileBtn.addEventListener("click", (e) => {
+        openTab(e, tabId, containerId, filePath);
+      });
+    }
 
     // create article + content div
     if (!document.getElementById(tabId)) {
@@ -102,11 +118,13 @@ function openTab(evt, tabId, containerId, filePath) {
 
   document.querySelectorAll(".tablinks").forEach(link => {
     link.classList.remove("active");
+    if (link.dataset.tab === tabId) {
+      link.classList.add("active");
+    }
   });
 
   const article = document.getElementById(tabId);
   if (article) article.style.display = "block";
-  evt.currentTarget.classList.add("active");
 
   if (filePath) {
     loadTabContent(containerId, filePath);

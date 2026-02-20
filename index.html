@@ -117,7 +117,8 @@
     <main id="main">
       <nav>
         <div class="tab"></div>
-        <div class="buttons">
+        <div class="mobile-top-tabs" aria-label="Mobile tab menu"></div>
+        <div class="buttons desktop-buttons">
           <button onclick="location.href='#'">Link 1</button>
           <button onclick="location.href='#'">Link 2</button>
           <button onclick="location.href='#'">Link 3</button>
@@ -133,6 +134,12 @@
 
   <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
   <div class="mobile-sidebar-controls" aria-label="Sidebar controls">
+    <div class="buttons mobile-bottom-links" aria-label="Quick links">
+      <button onclick="location.href='#'">Link 1</button>
+      <button onclick="location.href='#'">Link 2</button>
+      <button onclick="location.href='#'">Link 3</button>
+    </div>
+
     <button
       id="left-sidebar-toggle"
       class="sidebar-toggle left-toggle"
